@@ -84,7 +84,7 @@
                         
                         <ul class="styled-list">
                             <li>
-                              <span>Les élèves se connectent à une réunion via un lien envoyé par mail, ils sont <strong>4 élèves maximum </strong> de <strong>même classe et même niveau</strong>.</span>
+                              <span>Les élèves se connectent  une réunion via un lien envoyé par mail, ils sont <strong>4 élèves maximum </strong> de <strong>même classe et même niveau</strong>.</span>
                             </li>
                             <li>
                               <span>Durant le cours, chaque élève fait des <strong>exercices</strong> sur les <strong>chapitres vus en cours</strong> et reçoit des <strong>corrections et explications</strong> en direct.</span>
@@ -216,62 +216,19 @@
             </section>
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+    <script src="js/auth.js"></script>
     <script>
-        const menuBtn = document.getElementById('menu-btn');
-        const menu = document.getElementById('menu');
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const menu = document.getElementById('menu');
 
-        menuBtn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-        const prices = document.querySelectorAll('.price');
-        const savings = document.querySelectorAll('.savings');
-        const commitmentTexts = document.querySelectorAll('.commitment-text');
-
-        const commitmentMessages = {
-            monthly: "1 mois d'engagement",
-            quarterly: "4 mois d'engagement",
-        };
-
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                toggleButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                const period = button.dataset.period;
-
-                prices.forEach(price => {
-                    const value = price.dataset[period];
-                    price.textContent = `${value}€`;
-                    price.style.animation = 'none';
-                    price.offsetHeight; /* trigger reflow */
-                    price.style.animation = null;
-                    price.style.animation = 'pulse 0.5s';
+            if (menuBtn && menu) {
+                menuBtn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
                 });
-                savings.forEach((saving, index) => {
-                    const savingValue = saving.dataset[period];
-                        saving.classList.remove('hidden');
-                        saving.textContent = `Soit ${savingValue}€/h`;
-                        saving.style.animation = 'none';
-                        saving.offsetHeight; /* trigger reflow */
-                        saving.style.animation = null;
-                        saving.style.animation = 'fade-in 0.5s';
-                    
-                });
-
-                commitmentTexts.forEach(commitmentText => {
-                    commitmentText.textContent = commitmentMessages[period];
-                    commitmentText.style.animation = 'none';
-                    commitmentText.offsetHeight; /* trigger reflow */
-                    commitmentText.style.animation = null;
-                    commitmentText.style.animation = 'fade-in 0.5s';
-                });
-            });
-
+            }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/single-factor-auth"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/xrpl-provider"></script>
-    <script src="js/auth.js"></script>
 </body>
 </html>
