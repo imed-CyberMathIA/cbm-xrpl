@@ -1,0 +1,164 @@
+Integrate Web3Auth with the XRPL Blockchain
+
+The Web3Auth Web SDK offers a standard provider for accessing the user's private key on non-EVM chains like XRPL. You can use our native @web3auth/xrpl-provider for making direct connections with XRPL Blockchain. This will provide an xrplProvider that can be injected back into the Web3Auth instance, allowing you to perform actions such as retrieving account information, obtaining balances, signing and sending transactions, and reading from and writing to smart contracts. Here are some methods to help you quickly get started.
+Installation
+
+To interact with the XRPL blockchain, you can use the @web3auth/xrpl-provider package.
+
+    npm
+    Yarn
+    pnpm
+
+npm install --save @web3auth/xrpl-provider
+
+Getting the chainConfig
+
+    Mainnet
+    Testnet
+    Devnet
+
+const chainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.OTHER,
+  chainId: "0x2",
+  // Avoid using public rpcTarget & wsTarget in production.
+  // Use services like Infura, Quicknode etc
+  rpcTarget: "https://testnet-ripple-node.tor.us",
+  wsTarget: "wss://s.altnet.rippletest.net",
+  ticker: "XRP",
+  tickerName: "XRPL",
+  displayName: "xrpl testnet",
+  blockExplorerUrl: "https://testnet.xrpl.org",
+};
+
+Initializing Provider
+
+    PnP Modal SDK
+    PnP NoModal SDK
+    CoreKit SFA Web SDK
+
+import { Web3Auth } from "@web3auth/single-factor-auth";
+import { XrplPrivateKeyProvider } from "@web3auth/xrpl-provider";
+
+const privateKeyProvider = new XrplPrivateKeyProvider({
+  config: chainConfig,
+});
+
+const web3auth = new Web3Auth({
+  clientId, // Get your Client ID from Web3Auth Dashboard
+  web3AuthNetwork: "sapphire_mainnet",
+  privateKeyProvider,
+});
+
+Get User Info
+
+After logging in, the Web3Auth instance will provide you with information regarding the user that is logged in. This information is obtained directly from the JWT token and is not stored by Web3Auth. Therefore, this information can only be accessed through social logins after the user has logged into your application.
+
+const user = await web3auth.getUserInfo(); // web3auth instance
+
+Get Account and Balance
+
+try {
+  // provider is from above
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts) {
+    const accInfo = (await provider.request({
+      method: "account_info",
+      params: [
+        {
+          account: accounts[0],
+          strict: true,
+          ledger_index: "current",
+          queue: true,
+        },
+      ],
+    })) as Record<string, Record<string, string>>;
+    console.log("XRPL account info", accInfo);
+    // XRPL Account
+    const account = accInfo?.account_data?.Account;
+    // Balance
+    const balance = accInfo?.account_data?.Balance;
+  } else {
+    console.log("No accounts found, please report this issue.");
+  }
+} catch (error) {
+  console.error("Error", error);
+}
+
+Sign Transaction
+
+try {
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts && accounts.length > 0) {
+    const tx: Payment = {
+      TransactionType: "Payment",
+      Account: accounts[0] as string,
+      Amount: xrpToDrops(2),
+      Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX", // Destination address
+    };
+    const txSign = await provider.request({
+      method: "xrpl_signTransaction",
+      params: {
+        transaction: tx,
+      },
+    });
+    console.log("txRes", txSign);
+  } else {
+    console.log("failed to fetch accounts");
+  }
+} catch (error) {
+  console.log("error", error);
+}
+
+Send Transaction
+
+try {
+  const accounts = await provider.request<string[]>({
+    method: "xrpl_getAccounts",
+  });
+
+  if (accounts && accounts.length > 0) {
+    const tx: Payment = {
+      TransactionType: "Payment",
+      Account: accounts[0] as string,
+      Amount: xrpToDrops(2),
+      Destination: "rJAHHPYmy4g3h7kzfj2Mzm2nHwpKuVdEvX",
+    };
+    const txSign = await provider.request({
+      method: "xrpl_submitTransaction",
+      params: {
+        transaction: tx,
+      },
+    });
+    console.log("txRes", txSign);
+  } else {
+    console.log("failed to fetch accounts");
+  }
+} catch (error) {
+  console.log("error", error);
+}
+
+Sign Message
+
+try {
+  const msg = "Hello world";
+  const hexMsg = convertStringToHex(msg);
+  const txSign =
+    (await provider.request) <
+    { signature: string } >
+    {
+      method: "xrpl_signMessage",
+      params: {
+        message: hexMsg,
+      },
+    };
+  console.log("txRes", txSign);
+} catch (error) {
+  console.log("error", error);
+}
+

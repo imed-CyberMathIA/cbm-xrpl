@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>        
+    <title>CyberMathIA - Stage informatique</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="img/logo_cyber.png" class="logo"></img>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="#">Tarifs</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div class="blur-effect blur-1"></div>
+            <div class="blur-effect blur-2"></div>
+            <div class="blur-effect blur-3"></div>
+             <div class="blur-effect blur-4"></div>
+            <div class="blur-effect blur-5"></div>
+            <div class="blur-effect blur-6"></div>
+            
+            <h1>Nos forfaits d'apprentissage</h1>
+
+            <section>
+                <div class="toggle-container">
+                    <button class="toggle-button" data-period="monthly">1 mois</button>
+                    <button class="toggle-button active" data-period="quarterly">4 mois</button>
+                </div>
+
+                <div class="card-container">
+                    <div class="card">
+                        <h2>Forfait Boost</h2>
+                        <p class="price" data-monthly="170" data-quarterly="160">160€</p>
+                        <p class="savings" data-monthly="28,4" data-quarterly="26,7">Soit 26,7€/h</p>
+                        <p class="commitment-text">4 mois d'engagement</p>
+                        <div class="features-rate">
+                            <div class="feature-rate">
+                                Groupes restreints : 4 élèves maximum
+                            </div>
+                            <div class="feature-rate">
+                                1h30 de cours en ligne par semaine, avec des élèves de même classe et même niveau
+                            </div>
+                            <div class="feature-rate">
+                                Choix entre cours de mathématiques ou informatique
+                            </div>
+                            <div class="feature-rate">
+                                Devoirs adaptés pour chaque élève
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2>Forfait Progression</h2>
+                        <p class="price" data-monthly="220" data-quarterly="195">195€</p>
+                        <p class="savings" data-monthly="27,5" data-quarterly="24,4" data-annual="612">Soit 24,4€/h</p>
+                        <p class="commitment-text">4 mois d'engagement</p>
+
+                        <div class="features-rate">
+                            <div class="feature-rate">
+                                Groupes restreints : 4 élèves maximum
+                            </div>
+                            <div class="feature-rate">
+                                2h de cours en ligne par semaine, avec des élèves de même classe et même niveau
+
+                            </div>
+                            <div class="feature-rate">
+                                Choix entre cours de mathématiques ou informatique
+                            </div>
+                            <div class="feature-rate">
+                                Devoirs adaptés pour chaque élève
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card premium">
+                        <div>
+                        <h2>Forfait Premium</h2>
+                        <p class="price" data-monthly="400" data-quarterly="360">360€</p>
+                        <p class="savings" data-monthly="50" data-quarterly="45">Soit 45€/h</p>
+                        <p class="commitment-text">4 mois d'engagement</p>
+                    </div>
+                        <div class="features-rate">
+                            <div class="feature-rate">
+                                Cours individuel
+                            </div>
+                            <div class="feature-rate">
+                                2h de cours en ligne par semaine
+                            </div>
+                            <div class="feature-rate">
+                                Choix entre cours de mathématiques ou informatique
+                            </div>
+                            <div class="feature-rate" style="margin-bottom: 50px;">
+                                Devoirs adaptés à l'élève
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="stages-section">
+                <h1>Nos stages</h1>
+                <h3>Vacances d'été et vacances scolaires</h3>
+
+                <div class="stages-content">
+                    <img src="img/undraw_education_f8ru(1).svg" class="stages-icon" alt="Stage illustration">
+
+                    <div class="stages-details">
+
+                        <div class="feature-card stage-card-1">
+
+                        <p>Nous proposons des stages de : </p>
+                        <ul class="icon-list">
+                            <li><i class="fas fa-check-circle"></i> remise à niveau</li>
+                            <li><i class="fas fa-check-circle"></i> renforcement</li>
+                            <li><i class="fas fa-check-circle"></i> prise d'avance</li>
+                            <li><i class="fas fa-check-circle"></i> découverte</li>
+                        </ul>
+                        </div>
+                        <div class="stage-card-2 feature-card">
+
+                        <ul>
+                            <li><strong>Durée :</strong> 10 heures sur 5 jours (disponibilité de réserver de 9h à 20h)</li>
+                            <li><strong>Niveau :</strong> Collège - Lycée</li>
+                            <li><strong>Format :</strong> 100% en ligne</li>
+                            <li><strong>Tarif :</strong> 250€</li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+
+
+            <section id="contact" class="section-contact">
+            <div class="contact-form">
+                <h1>Contactez-nous</h1>
+                <form>
+                    <label for="nom">NOM *</label>
+                    <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                    
+                    <label for="telephone">TÉLÉPHONE *</label>
+                    <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" required>
+                    
+                    <label for="email">ADRESSE E-MAIL *</label>
+                    <input type="email" id="email" name="email" placeholder="Votre email" required>
+                    
+                    <label for="niveau">NIVEAU D'ÉTUDE DE L'ÉLÈVE *</label>
+                    <select id="niveau" name="niveau" required>
+                        <option value="">Sélectionnez ou tapez un niveau</option>
+                        <option value="6eme">6ème</option>
+                        <option value="5eme">5ème</option>
+                        <option value="4eme">4ème</option>
+                        <option value="3eme">3ème</option>
+                        <option value="2nde">2nde</option>
+                        <option value="1ere">1ère</option>
+                        <option value="terminale">Terminale</option>
+                    </select>
+                    
+                    <div class="radio-group">
+                        <label>QUELLE MATIÈRE VOUS INTÉRESSE ? *</label>
+                        <label><input type="radio" name="matiere" value="Mathématiques" required> Mathématiques</label>
+                        <label><input type="radio" name="matiere" value="Informatique"> Informatique</label>
+                        <label><input type="radio" name="matiere" value="Les deux"> Les deux</label>
+                    </div>
+                    
+                    <label for="message">MESSAGE</label>
+                    <textarea id="message" name="message" placeholder="Votre message" rows="4"></textarea>
+                    
+                    <button class="btn-form" type="submit">Envoyer</button>
+                </form>
+            </div>
+            </section>
+
+            
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    // Menu toggle
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+
+    if (menuBtn && menu) {
+        menuBtn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    }
+
+    // Toggle buttons for pricing
+    const toggleButtons = document.querySelectorAll('.toggle-button');
+    const prices = document.querySelectorAll('.price');
+    const savings = document.querySelectorAll('.savings');
+    const commitmentTexts = document.querySelectorAll('.commitment-text');
+
+    const commitmentMessages = {
+        monthly: "1 mois d'engagement",
+        quarterly: "4 mois d'engagement",
+    };
+
+    // Check if buttons exist before adding event listeners
+    if (toggleButtons.length > 0) {
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'active' class from all buttons, then add it to the clicked one
+                toggleButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Get the period (monthly or quarterly) from the button's dataset
+                const period = button.dataset.period;
+
+                // Update the prices
+                prices.forEach(price => {
+                    const value = price.dataset[period];
+                    if (value) {
+                        price.textContent = `${value}€`;
+                        // Trigger reflow for animation to reset
+                        price.style.animation = 'none';
+                        price.offsetHeight; /* trigger reflow */
+                        price.style.animation = 'pulse 0.5s';
+                    }
+                });
+
+                // Update the savings
+                savings.forEach(saving => {
+                    const savingValue = saving.dataset[period];
+                    if (savingValue) {
+                        saving.classList.remove('hidden');
+                        saving.textContent = `Soit ${savingValue}€/h`;
+                        // Trigger reflow for animation to reset
+                        saving.style.animation = 'none';
+                        saving.offsetHeight; /* trigger reflow */
+                        saving.style.animation = 'fade-in 0.5s';
+                    }
+                });
+
+                // Update the commitment text
+                commitmentTexts.forEach(commitmentText => {
+                    const newText = commitmentMessages[period];
+                    if (newText) {
+                        commitmentText.textContent = newText;
+                        // Trigger reflow for animation to reset
+                        commitmentText.style.animation = 'none';
+                        commitmentText.offsetHeight; /* trigger reflow */
+                        commitmentText.style.animation = 'fade-in 0.5s';
+                    }
+                });
+            });
+        });
+
+        // Optionally, trigger the first button click to initialize the correct state
+        const activeButton = document.querySelector('.toggle-button.active');
+        if (activeButton) {
+            activeButton.click();
+        }
+    }
+});
+
+    </script>
+</body>
