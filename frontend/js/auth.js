@@ -15,20 +15,16 @@ async function initWeb3Auth() {
                 blockExplorer: "https://etherscan.io",
                 ticker: "ETH",
                 tickerName: "Ethereum"
-            },
-            uiConfig: {
-                theme: "light",
-                loginMethodsOrder: ["google", "facebook"]
             }
         });
 
         await web3auth.initModal();
         
+        // Déconnexion automatique au chargement
         if (await web3auth.connected) {
-            const user = await web3auth.getUserInfo();
-            document.getElementById('login-button').textContent = 'Connecté';
-            console.log("User already logged in:", user);
+            await logout();
         }
+        
         console.log("Web3Auth initialized successfully");
     } catch (error) {
         console.error("Error initializing Web3Auth:", error);
@@ -45,10 +41,26 @@ async function login() {
         if (provider) {
             const user = await web3auth.getUserInfo();
             console.log("User logged in:", user);
-            document.getElementById('login-button').textContent = 'Connecté';
+            document.getElementById('login-button').textContent = 'Se déconnecter';
+            document.getElementById('login-button').onclick = logout;
         }
     } catch (error) {
         console.error("Error logging in:", error);
+    }
+}
+
+async function logout() {
+    if (!web3auth) {
+        console.log("Web3Auth not initialized");
+        return;
+    }
+    try {
+        await web3auth.logout();
+        console.log("Logged out");
+        document.getElementById('login-button').textContent = 'Se connecter';
+        document.getElementById('login-button').onclick = login;
+    } catch (error) {
+        console.error("Error logging out:", error);
     }
 }
 
