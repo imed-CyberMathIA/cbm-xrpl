@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberMathIA - Profils Élèves</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- Header existant -->
+        </header>
+
+        <main class="student-profiles">
+            <div id="auth-required" class="auth-message">
+                <h2>Connexion requise</h2>
+                <p>Veuillez vous connecter pour gérer les profils élèves.</p>
+            </div>
+
+            <div id="profiles-content" class="profiles-content hidden">
+                <h1>Profils de mes élèves</h1>
+                
+                <!-- Formulaire d'ajout d'élève -->
+                <div class="add-student-form">
+                    <h2>Ajouter un élève</h2>
+                    <form id="new-student-form">
+                        <div class="form-group">
+                            <label for="pseudo">Pseudo *</label>
+                            <input type="text" id="pseudo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">Prénom *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Nom *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="grade">Niveau *</label>
+                            <select id="grade" required>
+                                <option value="">Sélectionner un niveau</option>
+                                <option value="6eme">6ème</option>
+                                <option value="5eme">5ème</option>
+                                <option value="4eme">4ème</option>
+                                <option value="3eme">3ème</option>
+                                <option value="2nde">2nde</option>
+                                <option value="1ere">1ère</option>
+                                <option value="terminale">Terminale</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Ajouter</button>
+                    </form>
+                </div>
+
+                <!-- Liste des élèves -->
+                <div class="students-list">
+                    <h2>Mes élèves</h2>
+                    <div id="students-grid" class="students-grid">
+                        <!-- Les cartes élèves seront ajoutées ici dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/student-profiles.js"></script>
+</body>
+</html> 

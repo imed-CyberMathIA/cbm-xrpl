@@ -20,42 +20,20 @@ async function initWeb3Auth() {
 
         await web3auth.initModal();
         
-        // Vérifier si l'utilisateur est déjà connecté
         if (await web3auth.connected) {
             const user = await web3auth.getUserInfo();
-            await updateLoginButton(user);
+            const userRole = localStorage.getItem('userRole');
+            if (userRole) {
+                redirectToUserDashboard(userRole);
+            } else {
+                showRoleSelectionModal(user);
+            }
             console.log("Session restaurée pour:", user);
         }
         
         console.log("Web3Auth initialized successfully");
     } catch (error) {
         console.error("Error initializing Web3Auth:", error);
-    }
-}
-
-async function updateLoginButton(user = null) {
-    const loginButton = document.getElementById('login-button');
-    if (user) {
-        loginButton.innerHTML = `
-            <span class="user-info">${user.email || user.name || 'Utilisateur'}</span>
-            <span>Se déconnecter</span>
-        `;
-        loginButton.classList.add('connected');
-        loginButton.onclick = logout;
-        
-        // Mettre à jour l'accès aux cours si on est sur la page cours
-        if (window.location.pathname.includes('cours.html')) {
-            updateCoursesAccess(user);
-        }
-    } else {
-        loginButton.innerHTML = 'Se connecter';
-        loginButton.classList.remove('connected');
-        loginButton.onclick = login;
-        
-        // Mettre à jour l'accès aux cours si on est sur la page cours
-        if (window.location.pathname.includes('cours.html')) {
-            updateCoursesAccess();
-        }
     }
 }
 
@@ -69,10 +47,79 @@ async function login() {
         if (provider) {
             const user = await web3auth.getUserInfo();
             console.log("User logged in:", user);
-            await updateLoginButton(user);
+            showRoleSelectionModal(user);
         }
     } catch (error) {
         console.error("Error logging in:", error);
+    }
+}
+
+function showRoleSelectionModal(user) {
+    const modal = document.createElement('div');
+    modal.className = 'modal role-selection-modal';
+    modal.style.display = 'block';
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Bienvenue ${user.email}</h2>
+            <p>Veuillez sélectionner votre profil :</p>
+            <div class="role-buttons">
+                <button onclick="selectRole('student')" class="role-btn student-btn">
+                    <img src="img/student-icon.svg" alt="Élève">
+                    <span>Je suis un élève</span>
+                </button>
+                <button onclick="selectRole('parent')" class="role-btn parent-btn">
+                    <img src="img/parent-icon.svg" alt="Parent">
+                    <span>Je suis un parent</span>
+                </button>
+                <button onclick="selectRole('teacher')" class="role-btn teacher-btn">
+                    <img src="img/teacher-icon.svg" alt="Professeur">
+                    <span>Je suis un professeur</span>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+async function selectRole(role) {
+    try {
+        localStorage.setItem('userRole', role);
+        
+        const response = await fetch('/api/auth/set-role', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await web3auth.provider.request({ method: 'eth_accounts' })[0]}`
+            },
+            body: JSON.stringify({ role })
+        });
+
+        if (response.ok) {
+            redirectToUserDashboard(role);
+        } else {
+            throw new Error('Erreur lors de la définition du rôle');
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors de la sélection du rôle');
+    }
+}
+
+function redirectToUserDashboard(role) {
+    switch(role) {
+        case 'student':
+            window.location.href = 'student-dashboard.html';
+            break;
+        case 'parent':
+            window.location.href = 'student-profiles.html';
+            break;
+        case 'teacher':
+            window.location.href = 'teacher-dashboard.html';
+            break;
+        default:
+            console.error('Rôle inconnu');
     }
 }
 
@@ -83,13 +130,9 @@ async function logout() {
     }
     try {
         await web3auth.logout();
+        localStorage.removeItem('userRole');
         console.log("Logged out");
-        await updateLoginButton();
-        
-        // Rediriger vers la page d'accueil après la déconnexion
-        if (window.location.pathname.includes('cours.html')) {
-            window.location.href = 'index.html';
-        }
+        window.location.href = 'index.html';
     } catch (error) {
         console.error("Error logging out:", error);
     }

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberMathIA - Espace Professeur</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="img/logo_cyber.png" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="cours.html">Cours</a></li>
+                    <li><a href="teacher-dashboard.html">Dashboard</a></li>
+                    <li><button id="login-button" class="login-btn">Se connecter</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="teacher-dashboard">
+            <div id="auth-required" class="auth-message">
+                <h2>Accès réservé aux professeurs</h2>
+                <p>Veuillez vous connecter avec un compte professeur pour accéder à cette page.</p>
+            </div>
+
+            <div id="dashboard-content" class="dashboard-content hidden">
+                <div class="dashboard-header">
+                    <h1>Tableau de bord professeur</h1>
+                    <div class="quick-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="total-students">0</span>
+                            <span class="stat-label">Élèves</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="upcoming-sessions">0</span>
+                            <span class="stat-label">Sessions à venir</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="total-courses">0</span>
+                            <span class="stat-label">Cours actifs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Section Sessions -->
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h2>Sessions à venir</h2>
+                            <button class="btn-primary" onclick="showNewSessionModal()">
+                                Nouvelle session
+                            </button>
+                        </div>
+                        <div class="sessions-list" id="sessions-list">
+                            <!-- Sessions dynamiques ici -->
+                        </div>
+                    </div>
+
+                    <!-- Section Contenu pédagogique -->
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h2>Contenu pédagogique</h2>
+                            <button class="btn-primary" onclick="showUploadModal()">
+                                Ajouter du contenu
+                            </button>
+                        </div>
+                        <div class="materials-grid" id="materials-grid">
+                            <!-- Contenu dynamique ici -->
+                        </div>
+                    </div>
+
+                    <!-- Section Élèves -->
+                    <div class="dashboard-section">
+                        <h2>Mes élèves</h2>
+                        <div class="students-table-container">
+                            <table class="students-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Niveau</th>
+                                        <th>Progression</th>
+                                        <th>Dernière activité</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-body">
+                                    <!-- Élèves dynamiques ici -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modal Nouvelle Session -->
+        <div id="new-session-modal" class="modal">
+            <div class="modal-content">
+                <h2>Planifier une nouvelle session</h2>
+                <form id="new-session-form">
+                    <div class="form-group">
+                        <label>Type de session</label>
+                        <select name="sessionType" required>
+                            <option value="live">Cours en direct</option>
+                            <option value="recorded">Cours enregistré</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date et heure</label>
+                        <input type="text" id="session-datetime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Durée (minutes)</label>
+                        <input type="number" name="duration" min="30" max="180" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Élèves</label>
+                        <div class="students-select" id="students-select">
+                            <!-- Checkboxes dynamiques ici -->
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-primary">Planifier</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('new-session-modal')">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Upload Contenu -->
+        <div id="upload-modal" class="modal">
+            <div class="modal-content">
+                <h2>Ajouter du contenu pédagogique</h2>
+                <form id="upload-form">
+                    <div class="form-group">
+                        <label>Type de contenu</label>
+                        <select name="contentType" required>
+                            <option value="pdf">Document PDF</option>
+                            <option value="video">Vidéo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Titre</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fichier</label>
+                        <input type="file" name="file" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-primary">Télécharger</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('upload-modal')">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/teacher-dashboard.js"></script>
+</body>
+</html> 
