@@ -2217,3 +2217,13 @@ background-image: linear-gradient(to right, #ec485b, #ffa600);
     }
 }
 
+/* Ajouter ces styles pour le logo */
+.logo, .dashboard-logo {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover, .dashboard-logo:hover {
+    transform: scale(1.05);
+}
+
