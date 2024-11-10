@@ -31,6 +31,24 @@ async function initWeb3Auth() {
     }
 }
 
+async function updateLoginButton(user = null) {
+    const loginButton = document.getElementById('login-button');
+    if (user) {
+        // Utilisateur connecté
+        loginButton.innerHTML = `
+            <span class="user-info">${user.email || user.name || 'Utilisateur'}</span>
+            <span>Se déconnecter</span>
+        `;
+        loginButton.classList.add('connected');
+        loginButton.onclick = logout;
+    } else {
+        // Utilisateur déconnecté
+        loginButton.innerHTML = 'Se connecter';
+        loginButton.classList.remove('connected');
+        loginButton.onclick = login;
+    }
+}
+
 async function login() {
     if (!web3auth) {
         console.log("Web3Auth not initialized");
@@ -41,8 +59,7 @@ async function login() {
         if (provider) {
             const user = await web3auth.getUserInfo();
             console.log("User logged in:", user);
-            document.getElementById('login-button').textContent = 'Se déconnecter';
-            document.getElementById('login-button').onclick = logout;
+            await updateLoginButton(user);
         }
     } catch (error) {
         console.error("Error logging in:", error);
@@ -57,8 +74,7 @@ async function logout() {
     try {
         await web3auth.logout();
         console.log("Logged out");
-        document.getElementById('login-button').textContent = 'Se connecter';
-        document.getElementById('login-button').onclick = login;
+        await updateLoginButton();
     } catch (error) {
         console.error("Error logging out:", error);
     }
