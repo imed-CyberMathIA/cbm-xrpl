@@ -66,13 +66,35 @@
                         <button class="course-btn">Accéder au cours</button>
                     </div>
 
+                    <div class="course-card">
+                        <div class="course-header">
+                            <h3>Formation Mathématiques Avancées</h3>
+                            <span class="course-level">Niveau Avancé</span>
+                        </div>
+                        <div class="course-details">
+                            <p>Prix: 10 XRP (Testnet)</p>
+                            <ul>
+                                <li>Accès complet au cours</li>
+                                <li>Exercices corrigés</li>
+                                <li>Support personnalisé</li>
+                            </ul>
+                        </div>
+                        <button onclick="handleCoursePayment(10, 'Mathématiques Avancées')" class="course-btn payment-btn">
+                            Payer avec XRP (Testnet)
+                        </button>
+                        <p class="payment-info">
+                            Ce paiement utilise le réseau de test XRPL (Testnet).<br>
+                            Aucun vrai XRP ne sera dépensé.
+                        </p>
+                    </div>
+
                     <!-- Ajoutez d'autres cartes de cours ici -->
                 </div>
             </div>
         </main>
     </div>
+    <script src="https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/courses.js"></script>
+    <script src="js/auth.js" type="module"></script>
 </body>
 </html> 

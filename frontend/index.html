@@ -222,7 +222,93 @@
             </section>
         </main>
     </div>
+    <script src="https://unpkg.com/xrpl@2.14.0/build/xrpl-latest-min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
-    <script src="js/auth.js"></script>
+    <script>
+        // Configuration de Web3Auth
+        const clientId = "BNQSfZeXcErHErBPe8BhKTYHO29XecKhlEmTO9JbgtlLXqi5b_D6MyVWoF2WsyS9sAmijqSDPYcptaQg-3zMVJo";
+        let web3auth = null;
+
+        async function initWeb3Auth() {
+            try {
+                web3auth = new window.Modal.Web3Auth({
+                    clientId,
+                    web3AuthNetwork: "testnet",
+                    chainConfig: {
+                        chainNamespace: "other",
+                        chainId: "0x1",
+                        rpcTarget: "wss://s.altnet.rippletest.net:51233",
+                        displayName: "XRPL Testnet",
+                        blockExplorer: "https://testnet.xrpl.org",
+                        ticker: "XRP",
+                        tickerName: "XRP"
+                    }
+                });
+
+                await web3auth.initModal();
+                console.log("Web3Auth initialized");
+
+                // Vérifier si l'utilisateur est déjà connecté
+                if (await web3auth.connected) {
+                    const user = await web3auth.getUserInfo();
+                    updateLoginButton(user);
+                }
+            } catch (error) {
+                console.error("Error initializing Web3Auth:", error);
+            }
+        }
+
+        async function login() {
+            try {
+                const provider = await web3auth.connect();
+                if (provider) {
+                    const user = await web3auth.getUserInfo();
+                    updateLoginButton(user);
+                    console.log("User logged in:", user);
+                }
+            } catch (error) {
+                console.error("Error logging in:", error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await web3auth.logout();
+                updateLoginButton(null);
+                console.log("Logged out");
+            } catch (error) {
+                console.error("Error logging out:", error);
+            }
+        }
+
+        function updateLoginButton(user) {
+            const loginButton = document.getElementById('login-button');
+            const dashboardLink = document.getElementById('dashboard-link');
+            
+            if (user) {
+                loginButton.innerHTML = `
+                    <span class="user-info">${user.email || user.name || 'Utilisateur'}</span>
+                    <span>Se déconnecter</span>
+                `;
+                loginButton.onclick = logout;
+                loginButton.classList.add('connected');
+                if (dashboardLink) dashboardLink.style.display = 'block';
+            } else {
+                loginButton.innerHTML = 'Se connecter';
+                loginButton.onclick = login;
+                loginButton.classList.remove('connected');
+                if (dashboardLink) dashboardLink.style.display = 'none';
+            }
+        }
+
+        // Initialiser Web3Auth au chargement de la page
+        window.addEventListener('load', () => {
+            const loginButton = document.getElementById('login-button');
+            if (loginButton) {
+                loginButton.onclick = login;
+            }
+            initWeb3Auth();
+        });
+    </script>
 </body>
 </html>

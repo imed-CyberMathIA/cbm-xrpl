@@ -1,0 +1,123 @@
+Issuing Tokens
+
+In this section we will create fungible tokens or IOUs and transfert them between accounts.
+Creating tokens
+Dealing with token codes
+
+Token codes can be three letters or a padded hex string. Here is a convenience function to enable codes longer than three letters. This needs to be done to work with our training app, so you will want to include this in your code. This could easily be done via an import for instance, or placed in the index.ts file directly.
+
+Here is the function code:
+
+function convertStringToHexPadded(str: string): string {
+  // Convert string to hexadecimal
+  let hex: string = "";
+  for (let i = 0; i < str.length; i++) {
+    const hexChar: string = str.charCodeAt(i).toString(16);
+    hex += hexChar;
+  }
+
+  // Pad with zeros to ensure it's 40 characters long
+  const paddedHex: string = hex.padEnd(40, "0");
+  return paddedHex.toUpperCase(); // Typically, hex is handled in uppercase
+}
+
+Enable rippling
+
+For AMMs and the whole process to work, we need to enable rippling from the issuer account. To enable rippling we use the AccountSet transaction with the appropriate flag. Here is the function.
+
+async function enableRippling({ wallet, client }: any) {
+  const accountSet: AccountSet = {
+    TransactionType: "AccountSet",
+    Account: wallet.address,
+    SetFlag: AccountSetAsfFlags.asfDefaultRipple,
+  };
+
+  const prepared = await client.autofill(accountSet);
+  const signed = wallet.sign(prepared);
+  const result = await client.submitAndWait(signed.tx_blob);
+
+  console.log(result);
+  console.log("Enable rippling tx: ", result.result.hash);
+
+  return;
+}
+
+And in the main function of index.ts we can now add, to trigger this
+index.ts
+
+// enable ripling
+  await enableRippling({ wallet: issuer, client });
+
+Creating our issued token
+
+To create an issued token, the receiver first needs to add a trust line to the issuer. It's straightforward, we create a TrustSet transaction and sign it with the receiver account.
+
+Once the trustline is set, we send an amount from the issuer to the receiver that is less than the trust line maximum (500M tokens in this case).
+
+Here is the whole file for createToken.ts
+createToken.ts
+
+import { TrustSet, convertStringToHex, TrustSetFlags } from "xrpl";
+import { Payment } from "xrpl/src/models";
+
+async function createToken({ issuer, receiver, client, tokenCode }: any) {
+  // Create the trust line to send the token
+  const trustSet: TrustSet = {
+    TransactionType: "TrustSet",
+    Account: receiver.address,
+    LimitAmount: {
+      currency: tokenCode,
+      issuer: issuer.address,
+      value: "500000000", // 500M tokens
+    },
+    Flags: TrustSetFlags.tfClearNoRipple,
+  };
+  console.log(trustSet);
+
+  // Receiver opening trust lines
+  const preparedTrust = await client.autofill(trustSet);
+  const signedTrust = receiver.sign(preparedTrust);
+  const resultTrust = await client.submitAndWait(signedTrust.tx_blob);
+
+  console.log(resultTrust);
+  console.log("Trust line issuance tx result: ", resultTrust.result.hash);
+
+  // Send the token to the receiver
+  const sendPayment: Payment = {
+    TransactionType: "Payment",
+    Account: issuer.address,
+    Destination: receiver.address,
+    Amount: {
+      currency: tokenCode,
+      issuer: issuer.address,
+      value: "200000000", // 200M tokens
+    },
+  };
+  console.log(sendPayment);
+
+  const preparedPayment = await client.autofill(sendPayment);
+  const signedPayment = issuer.sign(preparedPayment);
+  const resultPayment = await client.submitAndWait(signedPayment.tx_blob);
+
+  console.log(resultPayment);
+  console.log("Transfer issuance tx result: ", resultPayment.result.hash);
+
+
+  return;
+}
+
+export default createToken;
+
+We can now call this function from the main function insideindex.ts, remembering to wrap our token currency code with the convertStringToHexPadded function.
+index.ts
+
+// ... previous code
+// create Token
+  await createToken({
+    issuer,
+    receiver,
+    client,
+    tokenCode: convertStringToHexPadded("LUC"),
+  });
+
+We can check in the explorer that the issuer and receiver have balances in the new token at this point.
