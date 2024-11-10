@@ -41,11 +41,21 @@ async function updateLoginButton(user = null) {
         `;
         loginButton.classList.add('connected');
         loginButton.onclick = logout;
+        
+        // Mettre à jour l'accès aux cours si on est sur la page cours
+        if (window.location.pathname.includes('cours.html')) {
+            updateCoursesAccess(user);
+        }
     } else {
         // Utilisateur déconnecté
         loginButton.innerHTML = 'Se connecter';
         loginButton.classList.remove('connected');
         loginButton.onclick = login;
+        
+        // Mettre à jour l'accès aux cours si on est sur la page cours
+        if (window.location.pathname.includes('cours.html')) {
+            updateCoursesAccess();
+        }
     }
 }
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>    
+    <title>CyberMathIA - Cours disponibles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="img/logo_cyber.png" class="logo"></img>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="tarifs.html">Tarifs</a></li>
+                    <li><a href="cours.html">Cours</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><button id="login-button" class="login-btn">Se connecter</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="courses-page">
+            <div class="blur-effect blur-1"></div>
+            <div class="blur-effect blur-2"></div>
+            
+            <div id="auth-required" class="auth-message">
+                <h2>Connexion requise</h2>
+                <p>Veuillez vous connecter pour accéder aux cours disponibles.</p>
+            </div>
+
+            <div id="courses-content" class="courses-content hidden">
+                <h1>Cours disponibles</h1>
+                
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <h3>Mathématiques 6ème</h3>
+                            <span class="course-level">Collège</span>
+                        </div>
+                        <div class="course-details">
+                            <p>Programme complet de mathématiques niveau 6ème</p>
+                            <ul>
+                                <li>Nombres et calculs</li>
+                                <li>Géométrie</li>
+                                <li>Grandeurs et mesures</li>
+                            </ul>
+                        </div>
+                        <button class="course-btn">Accéder au cours</button>
+                    </div>
+
+                    <div class="course-card">
+                        <div class="course-header">
+                            <h3>Python Débutant</h3>
+                            <span class="course-level">Tous niveaux</span>
+                        </div>
+                        <div class="course-details">
+                            <p>Introduction à la programmation Python</p>
+                            <ul>
+                                <li>Variables et types</li>
+                                <li>Structures de contrôle</li>
+                                <li>Fonctions</li>
+                            </ul>
+                        </div>
+                        <button class="course-btn">Accéder au cours</button>
+                    </div>
+
+                    <!-- Ajoutez d'autres cartes de cours ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/courses.js"></script>
+</body>
+</html> 
