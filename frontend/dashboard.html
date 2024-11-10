@@ -6,7 +6,6 @@
     <title>CyberMathIA - Tableau de bord</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -18,11 +17,11 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li class="active"><a href="#progression"><i class="fas fa-chart-line"></i>Ma Progression</a></li>
-                    <li><a href="#cours"><i class="fas fa-book"></i>Mes Cours</a></li>
-                    <li><a href="#devoirs"><i class="fas fa-tasks"></i>Mes Devoirs</a></li>
-                    <li><a href="#certifications"><i class="fas fa-certificate"></i>Certifications</a></li>
-                    <li><a href="#planning"><i class="fas fa-calendar"></i>Planning</a></li>
+                    <li class="active" data-section="progression"><a href="#progression"><i class="fas fa-chart-line"></i>Ma Progression</a></li>
+                    <li data-section="cours"><a href="#cours"><i class="fas fa-book"></i>Mes Cours</a></li>
+                    <li data-section="devoirs"><a href="#devoirs"><i class="fas fa-tasks"></i>Mes Devoirs</a></li>
+                    <li data-section="certifications"><a href="#certifications"><i class="fas fa-certificate"></i>Certifications</a></li>
+                    <li data-section="planning"><a href="#planning"><i class="fas fa-calendar"></i>Planning</a></li>
                 </ul>
             </nav>
         </aside>
@@ -42,17 +41,19 @@
 
             <!-- Section Progression -->
             <section id="progression" class="dashboard-section active">
-                <h2>Ma Progression</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Ma Progression</h2>
+                </div>
                 <div class="progress-stats">
                     <div class="progress-card">
-                        <div class="progress-circle" data-progress="75">
+                        <div class="progress-circle" style="--progress: 75%">
                             <span class="progress-percentage">75%</span>
                         </div>
                         <h3>Mathématiques</h3>
                         <p>15/20 chapitres complétés</p>
                     </div>
                     <div class="progress-card">
-                        <div class="progress-circle" data-progress="45">
+                        <div class="progress-circle" style="--progress: 45%">
                             <span class="progress-percentage">45%</span>
                         </div>
                         <h3>Informatique</h3>
@@ -60,13 +61,13 @@
                     </div>
                 </div>
 
-                <!-- Prochains objectifs -->
                 <div class="next-objectives">
                     <h3>Prochains Objectifs</h3>
                     <div class="objectives-grid">
                         <div class="objective-card">
                             <i class="fas fa-calculator"></i>
                             <h4>Dérivées et Limites</h4>
+                            <p>Chapitre en cours</p>
                             <div class="progress-bar">
                                 <div class="progress" style="width: 60%"></div>
                             </div>
@@ -75,6 +76,7 @@
                         <div class="objective-card">
                             <i class="fas fa-code"></i>
                             <h4>Algorithmes Python</h4>
+                            <p>Prochain chapitre</p>
                             <div class="progress-bar">
                                 <div class="progress" style="width: 30%"></div>
                             </div>
@@ -84,9 +86,85 @@
                 </div>
             </section>
 
+            <!-- Section Cours -->
+            <section id="cours" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> Mes Cours</h2>
+                </div>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-header">
+                            <h3>Mathématiques</h3>
+                            <span class="course-date">Aujourd'hui 14:00</span>
+                        </div>
+                        <div class="course-content">
+                            <h4>Dérivées et Applications</h4>
+                            <p>Chapitre 5 - Fonctions dérivables</p>
+                            <div class="course-actions">
+                                <button class="btn-join"><i class="fas fa-video"></i> Rejoindre</button>
+                                <button class="btn-resources"><i class="fas fa-file-pdf"></i> Ressources</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-card upcoming">
+                        <div class="course-header">
+                            <h3>Informatique</h3>
+                            <span class="course-date">Demain 16:30</span>
+                        </div>
+                        <div class="course-content">
+                            <h4>Introduction à Python</h4>
+                            <p>Chapitre 3 - Les boucles</p>
+                            <div class="course-actions">
+                                <button class="btn-resources"><i class="fas fa-file-pdf"></i> Ressources</button>
+                                <button class="btn-reminder"><i class="fas fa-bell"></i> Rappel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Devoirs -->
+            <section id="devoirs" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tasks"></i> Mes Devoirs</h2>
+                    <div class="section-actions">
+                        <button class="btn-filter active">Tous</button>
+                        <button class="btn-filter">À faire</button>
+                        <button class="btn-filter">Terminés</button>
+                    </div>
+                </div>
+                <div class="homework-grid">
+                    <div class="homework-card urgent">
+                        <div class="homework-status">
+                            <span class="status-badge">Urgent</span>
+                            <span class="due-date">Pour demain</span>
+                        </div>
+                        <h4>Exercices Dérivées</h4>
+                        <p>Exercices 1 à 5 page 45</p>
+                        <div class="homework-actions">
+                            <button class="btn-submit"><i class="fas fa-upload"></i> Rendre</button>
+                            <button class="btn-help"><i class="fas fa-question-circle"></i> Aide</button>
+                        </div>
+                    </div>
+                    <div class="homework-card completed">
+                        <div class="homework-status">
+                            <span class="status-badge">Terminé</span>
+                            <span class="completion-date">Rendu le 15/03</span>
+                        </div>
+                        <h4>TP Python</h4>
+                        <p>Création d'une calculatrice</p>
+                        <div class="homework-actions">
+                            <button class="btn-view"><i class="fas fa-eye"></i> Voir la correction</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Section Certifications -->
             <section id="certifications" class="dashboard-section">
-                <h2>Mes Certifications</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-certificate"></i> Mes Certifications</h2>
+                </div>
                 <div class="certification-cards">
                     <div class="certification-card completed">
                         <div class="cert-icon">
@@ -94,7 +172,10 @@
                         </div>
                         <h3>Algèbre Niveau 1</h3>
                         <p>Obtenue le 15 janvier 2024</p>
-                        <button class="btn-download">Télécharger <i class="fas fa-download"></i></button>
+                        <button class="btn-download">
+                            Télécharger 
+                            <i class="fas fa-download"></i>
+                        </button>
                     </div>
                     <div class="certification-card in-progress">
                         <div class="cert-icon">
@@ -107,13 +188,48 @@
                             </div>
                             <span>75% complété</span>
                         </div>
+                        <button class="btn-continue">
+                            Continuer
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Planning -->
+            <section id="planning" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-calendar"></i> Mon Planning</h2>
+                    <div class="calendar-nav">
+                        <button class="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                        <h3>Mars 2024</h3>
+                        <button class="btn-next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <!-- Le calendrier sera généré dynamiquement via JavaScript -->
+                </div>
+                <div class="upcoming-events">
+                    <h3>Prochains événements</h3>
+                    <div class="event-list">
+                        <div class="event-card">
+                            <div class="event-date">
+                                <span class="day">15</span>
+                                <span class="month">MAR</span>
+                            </div>
+                            <div class="event-details">
+                                <h4>Cours de Mathématiques</h4>
+                                <p>14:00 - 15:30</p>
+                                <span class="event-type">En ligne</span>
+                            </div>
+                            <button class="btn-join">Rejoindre</button>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <script src="js/auth.js"></script>
     <script src="js/dashboard.js"></script>
 </body>
 </html> 

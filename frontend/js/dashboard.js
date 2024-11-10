@@ -1,142 +1,208 @@
-document.addEventListener('DOMContentLoaded', async function() {
-    // Vérifier l'authentification via Web3Auth avant d'initialiser le tableau de bord
-    const isAuthenticated = await checkAuth();
-    if (!isAuthenticated) return;
-
-    // Initialiser les composants si l'utilisateur est authentifié
-    initializeDashboard();
-    
-    // Gérer la navigation
-    handleNavigation();
-    
-    // Mettre à jour les cercles de progression
-    updateProgressCircles();
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation des sections
+    initializeSections();
+    // Initialisation du calendrier
+    initializeCalendar();
+    // Gestion des filtres de devoirs
+    initializeHomeworkFilters();
+    // Animation des cercles de progression
+    initializeProgressCircles();
 });
 
-/*async function checkAuth() {
-    try {
-        // Vérifier si Web3Auth est initialisé et connecté
-        if (!window.web3auth) {
-            console.log("Web3Auth non initialisé");
-            window.location.href = 'index.html';
-            return false;
-        }
-        
-        const isConnected = await window.web3auth.isAuthenticated();
-        if (!isConnected) {
-            console.log("Utilisateur non connecté");
-            window.location.href = 'index.html';
-            return false;
-        }
+function initializeSections() {
+    const navItems = document.querySelectorAll('.sidebar-nav li');
+    const sections = document.querySelectorAll('.dashboard-section');
 
-        // Récupérer les informations de l'utilisateur
-        const user = await window.web3auth.getUserInfo();
-        if (!user) {
-            console.log("Impossible de récupérer les informations utilisateur");
-            window.location.href = 'index.html';
-            return false;
-        }
-
-        // Charger les informations de l'utilisateur
-        loadUserInfo(user);
-        return true;
-        
-    } catch (error) {
-        console.error("Erreur lors de la vérification de l'authentification:", error);
-        window.location.href = 'index.html';
-        return false;
-    }
-}
-*/
-
-function loadUserInfo(user) {
-    // Utiliser les informations réelles de l'utilisateur
-    document.getElementById('userName').textContent = user.name || user.email || 'Utilisateur';
-    document.getElementById('userLevel').textContent = `Niveau: ${user.level || '1ère S'}`;
-    
-    // Simuler les données de progression (à remplacer par des données réelles)
-    const progress = {
-        math: 75,
-        info: 45
-    };
-    
-    updateProgress(progress);
-}
-
-function updateProgress(progress) {
-    const circles = document.querySelectorAll('.progress-circle');
-    circles.forEach(circle => {
-        const subject = circle.parentElement.querySelector('h3').textContent.toLowerCase();
-        const progressValue = subject.includes('math') ? progress.math : progress.info;
-        
-        // Mettre à jour le cercle de progression
-        circle.style.background = `conic-gradient(#00A6FF ${progressValue}%, #f0f0f0 0%)`;
-        circle.querySelector('.progress-percentage').textContent = `${progressValue}%`;
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Retirer la classe active de tous les éléments
+            navItems.forEach(nav => nav.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Ajouter la classe active à l'élément cliqué
+            item.classList.add('active');
+            
+            // Afficher la section correspondante avec animation
+            const sectionId = item.dataset.section;
+            const targetSection = document.getElementById(sectionId);
+            
+            // Animation de transition
+            targetSection.style.opacity = '0';
+            targetSection.classList.add('active');
+            
+            setTimeout(() => {
+                targetSection.style.opacity = '1';
+            }, 50);
+        });
     });
 }
 
-function handleNavigation() {
-    const navLinks = document.querySelectorAll('.sidebar-nav a');
-    const sections = document.querySelectorAll('.dashboard-section');
+function initializeProgressCircles() {
+    const circles = document.querySelectorAll('.progress-circle');
     
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
+    circles.forEach(circle => {
+        const percentage = circle.querySelector('.progress-percentage').textContent;
+        const progress = parseInt(percentage);
+        circle.style.setProperty('--progress', `${progress}%`);
+        
+        // Animation au chargement
+        animateProgress(circle, progress);
+    });
+}
+
+function animateProgress(circle, targetProgress) {
+    let progress = 0;
+    const duration = 1500; // 1.5 secondes
+    const interval = 10; // Mise à jour tous les 10ms
+    const steps = duration / interval;
+    const increment = targetProgress / steps;
+    
+    const animation = setInterval(() => {
+        progress += increment;
+        if (progress >= targetProgress) {
+            progress = targetProgress;
+            clearInterval(animation);
+        }
+        circle.style.setProperty('--progress', `${progress}%`);
+    }, interval);
+}
+
+function initializeHomeworkFilters() {
+    const filterButtons = document.querySelectorAll('.btn-filter');
+    const homeworkCards = document.querySelectorAll('.homework-card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Mise à jour des boutons actifs
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
             
-            // Retirer la classe active de tous les liens
-            navLinks.forEach(l => l.parentElement.classList.remove('active'));
+            // Filtrage des devoirs
+            const filter = button.textContent.toLowerCase();
             
-            // Ajouter la classe active au lien cliqué
-            link.parentElement.classList.add('active');
-            
-            // Afficher la section correspondante
-            const targetId = link.getAttribute('href').substring(1);
-            sections.forEach(section => {
-                section.classList.remove('active');
-                if (section.id === targetId) {
-                    section.classList.add('active');
+            homeworkCards.forEach(card => {
+                if (filter === 'tous') {
+                    showCard(card);
+                } else if (filter === 'à faire' && !card.classList.contains('completed')) {
+                    showCard(card);
+                } else if (filter === 'terminés' && card.classList.contains('completed')) {
+                    showCard(card);
+                } else {
+                    hideCard(card);
                 }
             });
         });
     });
 }
 
-// Modifier la gestion de la déconnexion
-document.getElementById('logout-btn').addEventListener('click', async () => {
-    try {
-        if (window.web3auth) {
-            await window.web3auth.logout();
-        }
-        window.location.href = 'index.html';
-    } catch (error) {
-        console.error("Erreur lors de la déconnexion:", error);
-    }
-});
+function showCard(card) {
+    card.style.display = 'block';
+    setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    }, 50);
+}
 
-// Animation des cercles de progression
-function updateProgressCircles() {
-    const circles = document.querySelectorAll('.progress-circle');
-    circles.forEach(circle => {
-        const progress = parseInt(circle.dataset.progress);
-        circle.style.background = `conic-gradient(#00A6FF ${progress}%, #f0f0f0 0%)`;
+function hideCard(card) {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+        card.style.display = 'none';
+    }, 300);
+}
+
+function initializeCalendar() {
+    const calendar = document.querySelector('.calendar-grid');
+    const prevBtn = document.querySelector('.btn-prev');
+    const nextBtn = document.querySelector('.btn-next');
+    let currentDate = new Date();
+    
+    function renderCalendar(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDay = firstDay.getDay();
+        
+        // Mise à jour du titre du calendrier
+        document.querySelector('.calendar-nav h3').textContent = 
+            new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(date);
+        
+        // Génération du calendrier
+        let calendarHTML = `
+            <div class="calendar-header">
+                <span>Lun</span>
+                <span>Mar</span>
+                <span>Mer</span>
+                <span>Jeu</span>
+                <span>Ven</span>
+                <span>Sam</span>
+                <span>Dim</span>
+            </div>
+        `;
+        
+        let dayCount = 1;
+        for (let i = 0; i < 6; i++) {
+            calendarHTML += '<div class="calendar-week">';
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < startingDay) {
+                    calendarHTML += '<div class="calendar-day empty"></div>';
+                } else if (dayCount > daysInMonth) {
+                    calendarHTML += '<div class="calendar-day empty"></div>';
+                } else {
+                    const isToday = dayCount === new Date().getDate() && 
+                                  month === new Date().getMonth() && 
+                                  year === new Date().getFullYear();
+                    calendarHTML += `
+                        <div class="calendar-day ${isToday ? 'today' : ''}">
+                            <span>${dayCount}</span>
+                        </div>
+                    `;
+                    dayCount++;
+                }
+            }
+            calendarHTML += '</div>';
+        }
+        
+        calendar.innerHTML = calendarHTML;
+    }
+    
+    // Initialisation du calendrier
+    renderCalendar(currentDate);
+    
+    // Gestion des boutons de navigation
+    prevBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
     });
 }
 
-// Initialiser les composants du tableau de bord
-function initializeDashboard() {
-    // Charger les prochains objectifs
-    loadNextObjectives();
-    
-    // Charger les certifications
-    loadCertifications();
-}
+// Gestion des actions des boutons
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-join')) {
+        // Simulation de la redirection vers la salle de cours
+        alert('Redirection vers la salle de cours virtuelle...');
+    } else if (e.target.classList.contains('btn-resources')) {
+        // Simulation du téléchargement des ressources
+        alert('Téléchargement des ressources...');
+    } else if (e.target.classList.contains('btn-reminder')) {
+        // Simulation de l'ajout d'un rappel
+        e.target.innerHTML = '<i class="fas fa-check"></i> Rappel ajouté';
+        e.target.classList.add('active');
+    }
+});
 
-function loadNextObjectives() {
-    // Cette fonction pourrait charger dynamiquement les objectifs depuis une API
-    console.log('Chargement des objectifs...');
-}
-
-function loadCertifications() {
-    // Cette fonction pourrait charger dynamiquement les certifications depuis une API
-    console.log('Chargement des certifications...');
-} 
+// Gestion de la déconnexion
+document.getElementById('logout-btn').addEventListener('click', () => {
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        window.location.href = 'index.html';
+    }
+}); 
