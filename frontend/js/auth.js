@@ -46,8 +46,26 @@ async function login() {
         const provider = await web3auth.connect();
         if (provider) {
             const user = await web3auth.getUserInfo();
-            console.log("User logged in:", user);
-            showRoleSelectionModal(user);
+            const selectedRole = localStorage.getItem('selectedRole');
+            
+            const response = await fetch('/api/auth/verify-web3auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: user.email,
+                    web3authId: user.web3authId,
+                    role: selectedRole
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('userRole', selectedRole);
+                localStorage.setItem('token', data.token);
+                redirectToUserDashboard(selectedRole);
+            }
         }
     } catch (error) {
         console.error("Error logging in:", error);
@@ -138,14 +156,111 @@ async function logout() {
     }
 }
 
+function showInitialRoleModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal role-selection-modal';
+    modal.style.display = 'block';
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Bienvenue sur CyberMathIA</h2>
+            <p>Je suis :</p>
+            <div class="role-buttons">
+                <button onclick="handleRoleSelection('student')" class="role-btn student-btn">
+                    <img src="img/student-icon.svg" alt="Élève">
+                    <span>Un élève</span>
+                </button>
+                <button onclick="handleRoleSelection('parent')" class="role-btn parent-btn">
+                    <img src="img/parent-icon.svg" alt="Parent">
+                    <span>Un parent</span>
+                </button>
+                <button onclick="handleRoleSelection('teacher')" class="role-btn teacher-btn">
+                    <img src="img/teacher-icon.svg" alt="Professeur">
+                    <span>Un professeur</span>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+function showStudentLoginModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal student-login-modal';
+    modal.style.display = 'block';
+    
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h2>Connexion Élève</h2>
+            <form id="student-login-form">
+                <div class="form-group">
+                    <label for="pseudo">Pseudo</label>
+                    <input type="text" id="pseudo" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Se connecter</button>
+                    <button type="button" class="btn-secondary" onclick="showInitialRoleModal()">Retour</button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    document.getElementById('student-login-form').addEventListener('submit', handleStudentLogin);
+}
+
+async function handleRoleSelection(role) {
+    document.querySelector('.role-selection-modal').remove();
+    
+    if (role === 'student') {
+        showStudentLoginModal();
+    } else {
+        localStorage.setItem('selectedRole', role);
+        await login();
+    }
+}
+
+async function handleStudentLogin(e) {
+    e.preventDefault();
+    
+    const pseudo = document.getElementById('pseudo').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const response = await fetch('/api/auth/student-login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pseudo, password })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('userRole', 'student');
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('studentId', data.studentId);
+            window.location.href = 'student-dashboard.html';
+        } else {
+            const error = await response.json();
+            alert(error.message || 'Erreur de connexion');
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la connexion');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM Content Loaded");
     const loginButton = document.getElementById('login-button');
     if (loginButton) {
-        console.log("Login button found");
-        loginButton.addEventListener('click', login);
-    } else {
-        console.log("Login button not found");
+        loginButton.addEventListener('click', showInitialRoleModal);
     }
     
     initWeb3Auth().catch(console.error);

@@ -1494,3 +1494,47 @@ background-image: linear-gradient(to right, #ec485b, #ffa600);
     color: white;
 }
 
+/* Ajouter aux styles existants */
+
+.student-login-modal .modal-content {
+    max-width: 400px;
+}
+
+.student-login-modal .form-group {
+    margin-bottom: 20px;
+}
+
+.student-login-modal input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.student-login-modal .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.student-login-modal .btn-primary,
+.student-login-modal .btn-secondary {
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.student-login-modal .btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.student-login-modal .btn-secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
