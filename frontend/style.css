@@ -1432,7 +1432,7 @@ background-image: linear-gradient(to right, #ec485b, #ffa600);
 .progress-percentage {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--primary-color);
+    color: #333;
 }
 
 .progress-card h3 {
@@ -1635,13 +1635,14 @@ background-image: linear-gradient(to right, #ec485b, #ffa600);
 /* Style des cartes de certification */
 .certification-card {
     background: white;
-    padding: 30px;
+    padding: 35px;
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
     position: relative;
     overflow: hidden;
+    margin: 10px 0;
 }
 
 .certification-card::before {
