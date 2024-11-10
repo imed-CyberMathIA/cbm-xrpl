@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberMathIA - Tableau de bord</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Barre latérale -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo_cyber.png" alt="Logo" class="dashboard-logo">
+                <h2>Mon Espace</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#progression"><i class="fas fa-chart-line"></i>Ma Progression</a></li>
+                    <li><a href="#cours"><i class="fas fa-book"></i>Mes Cours</a></li>
+                    <li><a href="#devoirs"><i class="fas fa-tasks"></i>Mes Devoirs</a></li>
+                    <li><a href="#certifications"><i class="fas fa-certificate"></i>Certifications</a></li>
+                    <li><a href="#planning"><i class="fas fa-calendar"></i>Planning</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="dashboard-main">
+            <header class="dashboard-header">
+                <div class="user-info">
+                    <img src="img/avatar-default.png" alt="Avatar" class="user-avatar">
+                    <div class="user-details">
+                        <h3 id="userName">Chargement...</h3>
+                        <span id="userLevel">Niveau: Chargement...</span>
+                    </div>
+                </div>
+                <button id="logout-btn" class="logout-btn">Déconnexion</button>
+            </header>
+
+            <!-- Section Progression -->
+            <section id="progression" class="dashboard-section active">
+                <h2>Ma Progression</h2>
+                <div class="progress-stats">
+                    <div class="progress-card">
+                        <div class="progress-circle" data-progress="75">
+                            <span class="progress-percentage">75%</span>
+                        </div>
+                        <h3>Mathématiques</h3>
+                        <p>15/20 chapitres complétés</p>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-circle" data-progress="45">
+                            <span class="progress-percentage">45%</span>
+                        </div>
+                        <h3>Informatique</h3>
+                        <p>9/20 chapitres complétés</p>
+                    </div>
+                </div>
+
+                <!-- Prochains objectifs -->
+                <div class="next-objectives">
+                    <h3>Prochains Objectifs</h3>
+                    <div class="objectives-grid">
+                        <div class="objective-card">
+                            <i class="fas fa-calculator"></i>
+                            <h4>Dérivées et Limites</h4>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%"></div>
+                            </div>
+                            <span>60% complété</span>
+                        </div>
+                        <div class="objective-card">
+                            <i class="fas fa-code"></i>
+                            <h4>Algorithmes Python</h4>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 30%"></div>
+                            </div>
+                            <span>30% complété</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Certifications -->
+            <section id="certifications" class="dashboard-section">
+                <h2>Mes Certifications</h2>
+                <div class="certification-cards">
+                    <div class="certification-card completed">
+                        <div class="cert-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3>Algèbre Niveau 1</h3>
+                        <p>Obtenue le 15 janvier 2024</p>
+                        <button class="btn-download">Télécharger <i class="fas fa-download"></i></button>
+                    </div>
+                    <div class="certification-card in-progress">
+                        <div class="cert-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Python Débutant</h3>
+                        <div class="cert-progress">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 75%"></div>
+                            </div>
+                            <span>75% complété</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html> 

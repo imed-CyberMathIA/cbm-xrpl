@@ -1,10 +1,11 @@
 const clientId = "BNQSfZeXcErHErBPe8BhKTYHO29XecKhlEmTO9JbgtlLXqi5b_D6MyVWoF2WsyS9sAmijqSDPYcptaQg-3zMVJo";
 
-let web3auth = null;
+// Rendre web3auth accessible globalement
+window.web3auth = null;
 
 async function initWeb3Auth() {
     try {
-        web3auth = new window.Modal.Web3Auth({
+        window.web3auth = new window.Modal.Web3Auth({
             clientId,
             web3AuthNetwork: "sapphire_mainnet",
             chainConfig: {
@@ -18,11 +19,11 @@ async function initWeb3Auth() {
             }
         });
 
-        await web3auth.initModal();
+        await window.web3auth.initModal();
         
         // Vérifier si l'utilisateur est déjà connecté
-        if (await web3auth.connected) {
-            const user = await web3auth.getUserInfo();
+        if (await window.web3auth.connected) {
+            const user = await window.web3auth.getUserInfo();
             await updateLoginButton(user);
             console.log("Session restaurée pour:", user);
         }
@@ -35,6 +36,8 @@ async function initWeb3Auth() {
 
 async function updateLoginButton(user = null) {
     const loginButton = document.getElementById('login-button');
+    const dashboardLink = document.getElementById('dashboard-link');
+    
     if (user) {
         loginButton.innerHTML = `
             <span class="user-info">${user.email || user.name || 'Utilisateur'}</span>
@@ -47,6 +50,8 @@ async function updateLoginButton(user = null) {
         if (window.location.pathname.includes('cours.html')) {
             updateCoursesAccess(user);
         }
+        
+        dashboardLink.style.display = 'block'; // Afficher le lien dashboard
     } else {
         loginButton.innerHTML = 'Se connecter';
         loginButton.classList.remove('connected');
@@ -56,18 +61,20 @@ async function updateLoginButton(user = null) {
         if (window.location.pathname.includes('cours.html')) {
             updateCoursesAccess();
         }
+        
+        dashboardLink.style.display = 'none'; // Cacher le lien dashboard
     }
 }
 
 async function login() {
-    if (!web3auth) {
+    if (!window.web3auth) {
         console.log("Web3Auth not initialized");
         return;
     }
     try {
-        const provider = await web3auth.connect();
+        const provider = await window.web3auth.connect();
         if (provider) {
-            const user = await web3auth.getUserInfo();
+            const user = await window.web3auth.getUserInfo();
             console.log("User logged in:", user);
             await updateLoginButton(user);
         }
@@ -77,12 +84,12 @@ async function login() {
 }
 
 async function logout() {
-    if (!web3auth) {
+    if (!window.web3auth) {
         console.log("Web3Auth not initialized");
         return;
     }
     try {
-        await web3auth.logout();
+        await window.web3auth.logout();
         console.log("Logged out");
         await updateLoginButton();
         
