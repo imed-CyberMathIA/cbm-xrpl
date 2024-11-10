@@ -20,9 +20,11 @@ async function initWeb3Auth() {
 
         await web3auth.initModal();
         
-        // Déconnexion automatique au chargement
+        // Vérifier si l'utilisateur est déjà connecté
         if (await web3auth.connected) {
-            await logout();
+            const user = await web3auth.getUserInfo();
+            await updateLoginButton(user);
+            console.log("Session restaurée pour:", user);
         }
         
         console.log("Web3Auth initialized successfully");
@@ -34,7 +36,6 @@ async function initWeb3Auth() {
 async function updateLoginButton(user = null) {
     const loginButton = document.getElementById('login-button');
     if (user) {
-        // Utilisateur connecté
         loginButton.innerHTML = `
             <span class="user-info">${user.email || user.name || 'Utilisateur'}</span>
             <span>Se déconnecter</span>
@@ -47,7 +48,6 @@ async function updateLoginButton(user = null) {
             updateCoursesAccess(user);
         }
     } else {
-        // Utilisateur déconnecté
         loginButton.innerHTML = 'Se connecter';
         loginButton.classList.remove('connected');
         loginButton.onclick = login;
@@ -85,6 +85,11 @@ async function logout() {
         await web3auth.logout();
         console.log("Logged out");
         await updateLoginButton();
+        
+        // Rediriger vers la page d'accueil après la déconnexion
+        if (window.location.pathname.includes('cours.html')) {
+            window.location.href = 'index.html';
+        }
     } catch (error) {
         console.error("Error logging out:", error);
     }
