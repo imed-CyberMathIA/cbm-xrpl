@@ -2021,3 +2021,198 @@ background-image: linear-gradient(to right, #ec485b, #ffa600);
     color: white;
 }
 
+/* Style des cartes de devoirs */
+.homework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.homework-card {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.homework-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+}
+
+.homework-card.urgent::before {
+    background: linear-gradient(90deg, #ff6b6b, #ffa502);
+}
+
+.homework-card.completed::before {
+    background: linear-gradient(90deg, #00b09b, #96c93d);
+}
+
+.homework-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.homework-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.due-date, .completion-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.homework-card h4 {
+    color: var(--text-color);
+    font-size: 1.3rem;
+    margin: 0 0 10px 0;
+}
+
+.homework-card p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+.homework-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.homework-actions button {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Style spécifique pour les boutons de devoirs */
+.btn-submit {
+    background: linear-gradient(120deg, #5d5fef 0%, #4ecdc4 100%);
+    color: white;
+    border: none;
+    flex: 2;
+}
+
+.btn-help {
+    background: linear-gradient(120deg, #ffd3b6 0%, #ffaaa5 100%);
+    color: white;
+    border: none;
+}
+
+.btn-view {
+    background: linear-gradient(120deg, #a8e6cf 0%, #3eecac 100%);
+    color: white;
+    border: none;
+    width: 100%;
+}
+
+/* Section header avec filtres */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+    font-size: 1.8rem;
+}
+
+.section-header h2 i {
+    color: var(--primary-color);
+}
+
+.section-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-filter.active {
+    background: linear-gradient(120deg, #5d5fef 0%, #4ecdc4 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.btn-filter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(93, 95, 239, 0.2);
+}
+
+/* Animation pour les cartes */
+.homework-card {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .homework-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .section-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .homework-actions {
+        flex-direction: column;
+    }
+
+    .homework-actions button {
+        width: 100%;
+    }
+}
+
