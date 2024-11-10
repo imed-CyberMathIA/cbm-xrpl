@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberMathIA - Espace Parent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="parent-container">
+        <!-- Menu latéral -->
+        <aside class="parent-sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo_cyber.png" alt="Logo" class="sidebar-logo">
+                <h3>Espace Parent</h3>
+            </div>
+
+            <div class="sidebar-user">
+                <i class="fas fa-user-circle"></i>
+                <span id="parent-email"></span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="sidebar-btn active" onclick="showSection('dashboard')">
+                    <i class="fas fa-home"></i>
+                    Tableau de bord
+                </button>
+                <button class="sidebar-btn" onclick="showAddChildModal()">
+                    <i class="fas fa-user-plus"></i>
+                    Ajouter un enfant
+                </button>
+                <button class="sidebar-btn" onclick="window.location.replace()='index.html'">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour au site
+                </button>
+                <button class="sidebar-btn logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
+            </nav>
+
+            <div class="children-list">
+                <h3>Mes enfants</h3>
+                <div id="sidebar-children">
+                    <!-- Les enfants seront ajoutés ici dynamiquement -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Contenu principal -->
+        <main class="parent-main">
+            <div id="dashboard-section" class="dashboard-content">
+                <div class="child-details-container">
+                    <!-- Les détails de l'enfant sélectionné seront affichés ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Ajout Enfant -->
+    <div id="add-child-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h2>Ajouter un enfant</h2>
+            <form id="add-child-form">
+                <div class="form-group">
+                    <label for="pseudo">Pseudo de connexion *</label>
+                    <input type="text" id="pseudo" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe *</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">Prénom *</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nom *</label>
+                    <input type="text" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="grade">Niveau scolaire *</label>
+                    <select id="grade" required>
+                        <option value="">Sélectionner un niveau</option>
+                        <option value="6eme">6ème</option>
+                        <option value="5eme">5ème</option>
+                        <option value="4eme">4ème</option>
+                        <option value="3eme">3ème</option>
+                        <option value="2nde">2nde</option>
+                        <option value="1ere">1ère</option>
+                        <option value="terminale">Terminale</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">Ajouter</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal@7.3.2/dist/modal.umd.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/parent-dashboard.js"></script>
+</body>
+</html> 

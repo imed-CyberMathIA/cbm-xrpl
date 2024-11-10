@@ -7,9 +7,7 @@ const Student = require('../models/Student');
 
 router.post('/verify-web3auth', async (req, res) => {
     try {
-        const { idToken, email, web3authId } = req.body;
-        
-        // Vérifier le token Web3Auth ici
+        const { email, web3authId, role } = req.body;
         
         let user = await User.findOne({ email });
         
@@ -18,12 +16,21 @@ router.post('/verify-web3auth', async (req, res) => {
             user = new User({
                 email,
                 web3authId,
-                role: 'parent' // rôle par défaut
+                role: role, // Utilise le rôle fourni au lieu du rôle par défaut
+                createdAt: new Date()
             });
+            await user.save();
+        } else {
+            // Mettre à jour le rôle si l'utilisateur existe déjà
+            user.role = role;
             await user.save();
         }
 
-        const token = jwt.sign({ web3authId: user.web3authId }, process.env.JWT_SECRET);
+        const token = jwt.sign({ 
+            web3authId: user.web3authId,
+            role: user.role 
+        }, process.env.JWT_SECRET);
+        
         res.send({ user, token });
     } catch (error) {
         res.status(400).send(error);
